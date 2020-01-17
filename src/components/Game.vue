@@ -37,6 +37,8 @@ export default {
       board: [],
       gameStarted: false,
       gameFinished: null,
+      playerScore: null,
+      computerScore: null,
       blue: 'hsl(204, 86%, 53%)',
       green: 'hsl(141, 71%, 48%)',
       red: 'hsl(348, 100%, 61%)',
@@ -106,6 +108,7 @@ export default {
       let winnerScore;
       let playerScore;
       let computerScore;
+      let isDraw = null;
 
       const playProcess = () => {
         const { board } = this;
@@ -122,6 +125,7 @@ export default {
         getAvailableIndex();
 
         this.board[index].color = this.blue;
+
         setTimeout(() => {
           if (this.board[index].color === this.blue) {
             this.board[index].color = this.red;
@@ -132,32 +136,42 @@ export default {
           if (counter < this.board.length && !matchFinished) {
             playProcess();
           } else {
+            matchFinished = true;
             calculateResults();
             finishGame(winner);
-            showMessage(winner, winnerScore);
+            showMessage(winner, winnerScore, isDraw);
           }
         }, this.currentGameSettings.delay);
       };
 
       const finishGame = (winnerName) => {
-        winnerScore = winner === this.playerName ? playerScore : computerScore;
-        const date = utils.getFormattedDate();
-        this.sendWinnerToServer({ winner: winnerName, date });
+        if (!isDraw) {
+          winnerScore = winner === this.playerName ? playerScore : computerScore;
+          const date = utils.getFormattedDate();
+          this.sendWinnerToServer({ winner: winnerName, date });
+        }
         this.gameStarted = false;
         this.gameFinished = true;
       };
 
-      const showMessage = (name, score) => {
+      const showMessage = (name, score, draw = false) => {
         let message;
         let type;
         const duration = 5000;
-        if (name === this.playerName) {
-          message = `Congratulations! You won the game!  with score ${score}`;
-          type = 'is-success';
+
+        if (!draw) {
+          if (name === this.playerName) {
+            message = `Congratulations! You won the game!  with score ${score}`;
+            type = 'is-success';
+          } else {
+            message = `Computer won with score ${score}`;
+            type = 'is-danger';
+          }
         } else {
-          message = `Computer won with score ${score}`;
-          type = 'is-danger';
+          message = 'Draw';
+          type = 'is-warning';
         }
+
         this.$buefy.toast.open({
           message,
           type,
@@ -169,8 +183,10 @@ export default {
         const getScore = color => this.board.filter(el => el.color === color).length;
         playerScore = getScore(this.green);
         computerScore = getScore(this.red);
-        const winPoint = Math.ceil((this.boardSize) / 2);
-
+        this.playerScore = playerScore;
+        this.computerScore = computerScore;
+        let winPoint = Math.ceil((this.boardSize) / 2);
+        winPoint = (winPoint % 2) ? winPoint : winPoint += 1;
         if (playerScore >= winPoint) {
           matchFinished = true;
           winner = this.playerName;
@@ -179,23 +195,16 @@ export default {
           winner = this.playerName;
         }
 
-        if (!matchFinished) {
-          return;
-        }
-
-        if (playerScore > this.boardSize) {
-          winner = this.playerName;
-          matchFinished = true;
-        } else if (computerScore > this.boardSize) {
-          winner = 'computer';
-          matchFinished = true;
-        }
-        if (playerScore > computerScore) {
-          winner = this.playerName;
-          matchFinished = true;
-        } else if (playerScore < computerScore) {
-          winner = 'computer';
-          matchFinished = true;
+        if (matchFinished) {
+          if (playerScore > computerScore) {
+            winner = this.playerName;
+            matchFinished = true;
+          } else if (playerScore < computerScore) {
+            winner = 'computer';
+            matchFinished = true;
+          } else if (playerScore === computerScore) {
+            isDraw = true;
+          }
         }
       };
 

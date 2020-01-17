@@ -2,6 +2,7 @@
   <div class="gameplay-controls">
     <div class="gameplay-controls--field">
       <Dropdown :items="Object.keys(gameSettings)"
+                :gameStarted="gameStarted"
                 @gameModeSelected="$emit('gameModeSelected', $event)"/>
     </div>
     <div class="gameplay-controls--field">

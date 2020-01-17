@@ -1,6 +1,7 @@
 <template>
   <b-dropdown
     v-model="selected"
+    :disabled="gameStarted"
     aria-role="list"
     @change="$emit('gameModeSelected', $event)">
     <button class="button dropdownButton is-primary" type="button" slot="trigger">
@@ -34,6 +35,9 @@ export default {
     items: {
       type: Array,
       required: true,
+    },
+    gameStarted: {
+      type: Boolean,
     },
   },
   data() {
