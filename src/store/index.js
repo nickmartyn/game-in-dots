@@ -43,17 +43,16 @@ export default new Vuex.Store({
       state.winners = [...winners];
     },
     async sendWinnerToServer({ state, state: { apiBaseURL, apiEndPoints } }, { winner, date }) {
-      // axios.post(`${apiBaseURL}/${apiEndPoints.winners}`, {
-      //   winner,
-      //   date,
-      // })
-      //   .then((response) => {
-      //     console.log(response);
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   }
-      state.winners = [...state.winners, { winner, date }];
+      axios.post(`${apiBaseURL}/${apiEndPoints.winners}`, {
+        winner,
+        date,
+      })
+        .then((response) => {
+          state.winners = [...response.data];
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
   },
   modules: {},
