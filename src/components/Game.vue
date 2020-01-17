@@ -1,7 +1,7 @@
 <template>
   <div class="game-block">
     <div>
-      <GameplayControls
+      <GamePlayControls
         v-bind="{ gameSettings, gameStarted, gameFinished }"
         @gameModeSelected="onGameModeSelected($event)"
         @playerNameChanged="onPlayerNameChanged($event)"
@@ -13,16 +13,15 @@
       />
     </div>
     <div>
-      <LeaderBoard v-bind="{winners: winnersOrdered}"/>
+      <LeaderBoard v-bind="{ winners: winnersOrdered }"/>
     </div>
   </div>
-
 </template>
 
 <script>
 import { mapActions, mapState, mapMutations } from 'vuex';
 import Board from './Board.vue';
-import GameplayControls from './GameplayControls.vue';
+import GamePlayControls from './GamePlayControls.vue';
 import LeaderBoard from './LeaderBoard.vue';
 import * as utils from '../utils';
 
@@ -30,7 +29,7 @@ export default {
   name: 'Game',
   components: {
     Board,
-    GameplayControls,
+    GamePlayControls,
     LeaderBoard,
   },
   data() {
@@ -38,7 +37,6 @@ export default {
       board: [],
       gameStarted: false,
       gameFinished: null,
-      trapFocus: false,
       blue: 'hsl(204, 86%, 53%)',
       green: 'hsl(141, 71%, 48%)',
       red: 'hsl(348, 100%, 61%)',
@@ -76,7 +74,6 @@ export default {
       }
       if (!this.currentGameSettings.mode) {
         this.$buefy.toast.open('Please, select game mode');
-        this.trapFocus = true;
         return;
       }
       if (this.gameFinished !== null) {
@@ -113,9 +110,7 @@ export default {
       const playProcess = () => {
         const { board } = this;
         let index;
-        const getIndex = () => {
-          return utils.getRandomInt(0, this.boardSize - 1);
-        };
+        const getIndex = () => utils.getRandomInt(0, this.boardSize - 1);
 
         const getAvailableIndex = () => {
           index = getIndex();
@@ -145,7 +140,6 @@ export default {
       };
 
       const finishGame = (winnerName) => {
-        console.log('WinnerName', winnerName)
         winnerScore = winner === this.playerName ? playerScore : computerScore;
         const date = utils.getFormattedDate();
         this.sendWinnerToServer({ winner: winnerName, date });
@@ -163,16 +157,12 @@ export default {
         } else {
           message = `Computer won with score ${score}`;
           type = 'is-danger';
-        };
-
+        }
         this.$buefy.toast.open({
           message,
           type,
           duration,
         });
-
-        console.log('ShowMessage', winner);
-        console.log(`${name} won with score ${score}`);
       };
 
       const calculateResults = () => {
@@ -190,10 +180,8 @@ export default {
         }
 
         if (!matchFinished) {
-          console.log('!matchFinished, returning');
           return;
         }
-        console.log('matchFinished');
 
         if (playerScore > this.boardSize) {
           winner = this.playerName;
@@ -208,15 +196,12 @@ export default {
         } else if (playerScore < computerScore) {
           winner = 'computer';
           matchFinished = true;
-        } else {
-          alert('Draw!');
         }
       };
 
       playProcess();
     },
     initBoard() {
-      console.log('initBord');
       const { boardSize } = this;
       this.board = new Array(boardSize).fill(null).map(() => ({ color: '' }));
     },

@@ -2,10 +2,11 @@
   <div class="board">
     <div class="wrapper" :style="boardWidth">
     <template v-for="(item, index) in board">
-      <BoardSquare :key="index"
-                   :index="index + 1"
-                   :color="item.color ? item.color : '#fff'"
-                   @click.native="handleSelect(index)"
+      <BoardSquare
+        :key="index"
+        :index="index + 1"
+        :color="item.color ? item.color : '#fff'"
+        @click.native="handleSelect(index)"
       />
     </template>
     </div>

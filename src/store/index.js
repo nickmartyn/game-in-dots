@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    gameSettings: {"easyMode":{"field":5,"delay":2000},"normalMode":{"field":10,"delay":1000},"hardMode":{"field":15,"delay":900}},
+    gameSettings: {},
     currentGameSettings: {},
     playerName: '',
     apiBaseURL: 'https://starnavi-frontend-test-task.herokuapp.com',
@@ -16,9 +16,7 @@ export default new Vuex.Store({
     },
     winners: [],
   },
-  getters: {
-
-  },
+  getters: {},
   mutations: {
     setGameSettings(state, payload) {
       state.gameSettings = payload;
@@ -27,27 +25,17 @@ export default new Vuex.Store({
       if (mode in state.gameSettings) {
         state.currentGameSettings = { ...state.gameSettings[mode], mode };
       }
-      console.log(state.currentGameSettings.mode);
     },
     setPlayerName(state, name) {
       state.playerName = name;
-      console.log(state.playerName);
     },
     setWinners(state, payload) {
       state.winners = [...payload];
     },
   },
   actions: {
-    async fetchGameSettings({ commit, state: { apiUrls } }) {
-      // const { data } = await axios.get(apiUrls.gameSettings);
-      const data = {
-        easyMode: {
-          field :5, delay: 2000,
-        },
-        normalMode:{"field":10,"delay":1000},
-        hardMode:{"field":15,"delay":900}
-      }
-
+    async fetchGameSettings({ commit, state: { apiBaseURL, apiEndPoints } }) {
+      const { data } = await axios.get(`${apiBaseURL}/${apiEndPoints.gameSettings}`);
       commit('setGameSettings', data);
     },
     async fetchWinners({ state, state: { apiBaseURL, apiEndPoints } }) {
@@ -68,7 +56,5 @@ export default new Vuex.Store({
       state.winners = [...state.winners, { winner, date }];
     },
   },
-  modules: {
-
-  },
+  modules: {},
 });

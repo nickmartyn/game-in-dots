@@ -19,21 +19,21 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-  h2 {
-    text-align: left;
-    color: #2c3e50;
-  }
-  .winner-item {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    padding: 15px 20px;
-    background: #cfd8dc;
-    color: #2c3e50;
-    margin-bottom: 5px;
-  }
+<style lang="scss" scoped>
+h2 {
+  text-align: left;
+  color: #2c3e50;
+}
+.winner-item {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 15px 20px;
+  background: #cfd8dc;
+  color: #2c3e50;
+  margin-bottom: 5px;
   .winner-name {
     padding-right: 7px;
   }
+}
 </style>

@@ -2,7 +2,6 @@
   <div class="gameplay-controls">
     <div class="gameplay-controls--field">
       <Dropdown :items="Object.keys(gameSettings)"
-                :trap-focus="trapFocus"
                 @gameModeSelected="$emit('gameModeSelected', $event)"/>
     </div>
     <div class="gameplay-controls--field">
@@ -31,7 +30,7 @@
 import Dropdown from './Dropdown.vue';
 
 export default {
-  name: 'GameplayControls',
+  name: 'GamePlayControls',
   components: { Dropdown },
   props: {
     gameSettings: {
@@ -47,10 +46,6 @@ export default {
       type: Boolean,
       required: false,
       default: false,
-    },
-    trapFocus: {
-      type: Boolean,
-      required: false,
     },
   },
   data() {
@@ -68,7 +63,6 @@ export default {
   },
   methods: {
     handlePlayerNameInput() {
-      console.log('hanleeddd');
       this.playerNameTouched = true;
       this.$emit('playerNameChanged', this.playerName);
     },
@@ -87,6 +81,7 @@ export default {
 }
 .gameplay-controls--field {
   padding: 5px 0;
+  min-width: 100px;
   max-width: 200px;
   margin-right: 5px;
 }
