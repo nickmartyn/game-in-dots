@@ -1,4 +1,8 @@
-# starnavi
+# StarNavi - Game in Dots
+
+## Description
+
+Used libraries and frameworks: Vue, Vuex, Axios, Buefy.
 
 ## Project setup
 ```
