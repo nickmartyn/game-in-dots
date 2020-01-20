@@ -3,6 +3,7 @@
 ## Description
 
 Used libraries and frameworks: Vue, Vuex, Axios, Buefy.
+Demo: https://gameindots.herokuapp.com/
 
 ## Project setup
 ```
